@@ -1,0 +1,82 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Queue {
+    int data;
+    struct Queue *next;
+}*front=NULL, *rear=NULL;
+
+void Enqueue(struct Queue *queue, int element) {
+     struct Queue *t;
+     t=(struct Queue *)malloc(sizeof(struct Queue));
+     t->data=element;
+     t->next=NULL;
+     if(t==NULL)
+        printf("Stack Full");
+     else if(rear==NULL){
+        rear=front=t;
+     }
+     else {
+        rear->next=t;
+        rear=t;
+     }
+}
+
+int Dequeue(struct Queue *queue) {
+    int x;
+    struct Queue *p;
+    if(rear==NULL)
+        printf("stack empty");
+    else {
+        p=front;
+        front=front->next;
+        x=p->data;
+        free(p);
+    }
+    return x;
+}
+
+void display(struct Queue queue) {
+    struct Queue *p=front;
+    while(p) {
+        printf("%d ", p->data);
+        p=p->next;
+    }
+    printf("\n");
+}
+
+
+int isFull(struct Queue queue) {
+    struct Queue *t=(struct Queue *)malloc(sizeof(struct Queue));
+    if(t==NULL)
+        return 1;
+    else
+        return 0;
+}
+
+int isEmpty(struct Queue queue) {
+    if(rear==NULL)
+        return 1;
+    else
+        return 0;
+}
+
+void main()
+{
+    struct Queue queue;
+    Enqueue(&queue, 50);
+    Enqueue(&queue, 150);
+    Enqueue(&queue, 250);
+    Enqueue(&queue, 350);
+    Enqueue(&queue, 450);
+    Dequeue(&queue);
+    display(queue);
+    if(isFull(queue))
+        printf("Queue Full\n");
+    else
+        printf("Queue not full\n");
+    if(isEmpty(queue))
+        printf("Queue empty");
+    else
+        printf("Queue not empty");
+}
