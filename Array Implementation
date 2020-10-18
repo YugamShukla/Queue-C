@@ -1,72 +1,67 @@
-#include <stdio.h>
-#include <stdlib.h>
+package Queue;
 
-struct Queue {
+public class CircularQueue {
     int size;
+    int[]data;
     int front;
     int rear;
-    int *Q;
-};
 
-void Enqueue(struct Queue *queue, int element) {
-     if(queue->rear==queue->size-1)
-        printf("Queue is already full\n");
-     else {
-        queue->rear++;
-        queue->Q[queue->rear] = element;
-     }
-}
-
-int Dequeue(struct Queue *queue) {
-    int x;
-    if(queue->front==queue->rear)
-        printf("Queue is empty\n");
-    else {
-        queue->front++;
-        x = queue->Q[queue->front];
-        return x;
+     CircularQueue(int size){
+      this.size=size;
+      data=new int[size];
+      this.rear=0;
+      this.front=0;
     }
-}
 
-void display(struct Queue queue) {
-    for(int i=queue.front+1; i<=queue.rear; i++)
-        printf("%d ", queue.Q[i]);
-    printf("\n");
-}
+    public void Enqueue (int value){
+       if (((rear+1)%size)==front) {
+         System.out.println("Queue is full");
+       }
+       else{
+         if (rear==front & rear==-1) {
+           front=0;
+         }
+         else{
+           rear=(rear+1)%size;
+           data[rear]=value;
+         }
+       }
+    }
 
-int isFull(struct Queue queue) {
-    if(queue.rear==queue.size-1)
-        return 1;
-    else
-        return 0;
-}
+    public void Dequeue(){
+      if (rear==front & rear==0) {
+        System.out.println("Queue is empty");
+      }
+      else{
+        int item=data[front];
+        data[front]=0;
+        if (rear==front) {
+          rear=-1;
+          front=-1;
+        }
+        else{
+          front=(front+1)%size;
+        }
+      }
+    }
 
-int isEmpty(struct Queue queue) {
-    if(queue.rear==queue.front)
-        return 1;
-    else
-        return 0;
-}
+    public void print(){
+        for(int i=(front+1)%size ; i<=rear ; i++) {
+            System.out.println(" "+data[i]);
+        }
+    }
 
-int main()
-{
-    struct Queue queue;
-    queue.size=10;
-    queue.rear=queue.front=-1;
-    queue.Q=(int *)malloc((queue.size)*sizeof(int));
-    Enqueue(&queue, 50);
-    Enqueue(&queue, 100);
-    Enqueue(&queue, 150);
-    Enqueue(&queue, 200);
-    printf("Element dequeued: %d\n", Dequeue(&queue));
-    display(queue);
-    if(isFull(queue))
-        printf("Queue Full\n");
-    else
-        printf("Queue not full\n");
-    if(isEmpty(queue))
-        printf("Queue empty");
-    else
-        printf("Queue not empty");
-
+    public static void main(String[] args) {
+        int size=5;
+        CircularQueue cq=new CircularQueue(size);
+        cq.Enqueue(10);
+        cq.Enqueue(20);
+        cq.Enqueue(30);
+        cq.Enqueue(40);
+        cq.print();
+        System.out.println("\n");
+        cq.Dequeue();
+        cq.Enqueue(60);
+        cq.print(); 
+    }
 }
