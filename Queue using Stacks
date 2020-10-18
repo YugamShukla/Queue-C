@@ -1,0 +1,84 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int s1[100];
+int s2[100];
+int top1=-1;
+int top2=-1;
+int count=0;
+
+void push1(int element) {
+    if(top1==99)
+        printf("Stack full");
+    else
+        s1[++top1]=element;
+}
+
+void push2(int element) {
+    if(top2==99)
+        printf("Stack full");
+    else
+        s2[++top2]=element;
+}
+
+int pop1() {
+    int x;
+    if(top1==-1)
+        return;
+    else {
+       x=s1[top1--];
+        return x;
+    }
+}
+
+int pop2() {
+    int x;
+    if(top2==-1)
+        return;
+    else {
+       x=s2[top2--];
+    return x;
+    }
+}
+
+void enqueue(int element) {
+    push1(element);
+    count++;
+}
+
+void dequeue() {
+    int i,x;
+    for(i=0; i<count; i++) {
+        push2(pop1());
+    }
+    pop2();
+    count--;
+    for(i=0; i<count; i++) {
+        push1(pop2());
+    }
+
+}
+
+void display() {
+    int i;
+    for(i=0; i<=top1; i++)
+        printf("%d ", s1[i]);
+        printf("\n");
+}
+
+void main(){
+    top1=top2=-1;
+    enqueue(50);
+    enqueue(150);
+    enqueue(250);
+    enqueue(350);
+    enqueue(450);
+
+    display();
+    printf("%d\n", count);
+    dequeue();
+    dequeue();
+    display();
+    enqueue(550);
+    display();
+}
